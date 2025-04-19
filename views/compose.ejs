@@ -1,9 +1,14 @@
 <%- include("header") -%>
 
-<h1 class="text-4xl font-bold text-gray-800 mt-8 mb-4">Compose</h1>
+<h1 class="text-4xl font-bold text-gray-800 mt-8 mb-4 text-center">Compose</h1>
 
-<form action="/compose" method="POST" class="flex items-center space-x-4">
-    <input type="text" name="postText" placeholder="Enter text here" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+<form action="/compose" method="POST" class="flex flex-col space-y-4 max-w-md mx-auto">
+    <label for="postTitle" class="text-lg text-gray-700">Title</label>
+    <input id="postTitle" type="text" name="postTitle" placeholder="Enter title here" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+    
+    <label for="postBody" class="text-lg text-gray-700">Content</label>
+    <textarea id="postBody" name="postBody" rows="6" placeholder="Enter content here" class="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+    
     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">Publish</button>
 </form>
 
