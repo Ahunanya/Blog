@@ -3,6 +3,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const lodash = require("lodash");
 
 const homeStartingContent = "Struggling with your architectural projects? Discover in-depth case studies of real-world Nigerian designs, right here. Learn from local successes and build your understanding of context-driven architecture.";
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
@@ -20,7 +21,8 @@ app.use(express.static("public"));
 
 app.get("/", function(req, res){
   res.render("home",{
-    content: homeStartingContent
+    content: homeStartingContent,
+    posts: posts
   });
 });
 
@@ -43,13 +45,30 @@ app.post("/compose", function(req, res) {
     title: req.body.postTitle,
     content: req.body.postBody
   };
-  res.redirect("/");
   posts.push(post);
+  res.redirect("/");
+  
 });
 
+// Add this route to handle individual post pages
+app.get("/posts/:postTitle", function(req, res) {
+  // Decode the parameter and convert it to lower case
+  const requestedTitle = lodash.lowerCase(decodeURIComponent(req.params.postTitle));
+  
+  // Find the matching post from the posts array
+  const foundPost = posts.find(post => lodash.lowerCase(post.title) === requestedTitle);
 
-
-
+  if (foundPost) {
+    console.log("Match found:", foundPost);
+    res.render("post", {
+      title: foundPost.title,
+      content: foundPost.content
+    });
+  } else {
+    console.log("No matching post found for:", requestedTitle);
+    res.redirect("/");
+  }
+});
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");

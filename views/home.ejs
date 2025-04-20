@@ -1,7 +1,28 @@
-<%- include("header") -%>
+<%- include("partials/header") -%>
 
-<h1 class="text-4xl font-bold text-gray-800 mt-8 mb-4">Home</h1>
+<div class="m-4">
+  <h1 class="text-4xl font-bold text-gray-800 mt-8 mb-4">Home</h1>
 
-<p><%= content %></p>
+  <p><%= content %></p>
 
-<%- include("footer") -%>
+  <% if (posts.length === 0) { %>
+      <p>No posts yet.</p>
+  <% } else { %>
+      <% posts.forEach(function(post) { %>
+          <div class="mb-6 border border-gray-300 p-4 rounded-md">
+              <!-- Link to the dedicated post page -->
+              <a href="/posts/<%= encodeURIComponent(post.title) %>">
+                  <h2 class="text-2xl font-semibold"><%= post.title %></h2>
+              </a>
+              <p>
+                <%= post.content.length > 100 ? post.content.substring(0, 100) + "..." : post.content %>
+                <% if (post.content.length > 100) { %>
+                    <a href="/posts/<%= encodeURIComponent(post.title) %>" class="text-blue-500 hover:underline ml-2">Read More</a>
+                <% } %>
+              </p>
+          </div>
+      <% }); %>
+  <% } %>
+</div>
+
+<%- include("partials/footer") -%>
